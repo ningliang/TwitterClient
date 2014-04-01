@@ -13,6 +13,4 @@
 
 @property (nonatomic, strong) Tweet *tweet;
 
-- (void)onReplyTweetClick;
-
 @end

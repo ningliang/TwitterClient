@@ -84,7 +84,9 @@
 }
 
 - (void)onNewTweetClick {
-    // TODO load the compose view
+    ComposeTweetViewController *composeTweetViewController = [[ComposeTweetViewController alloc] init];
+    composeTweetViewController.delegate = self;
+    [self.navigationController pushViewController:composeTweetViewController animated:YES];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -122,7 +124,7 @@
 }
 
 - (void)didReply:(Tweet *)tweet {
-    
+    // TODO open the compose page
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -132,6 +134,23 @@
     [self.navigationController pushViewController:tweetDetailViewController animated:YES];
 }
 
+- (void)didSaveTweet:(NSString *)content {
+    [self.navigationController popViewControllerAnimated:YES];
+    [[TwitterClient sharedInstance] tweet:content];
 
+    Tweet *fakeTweet = [[Tweet alloc] init];
+    fakeTweet.user = [User currentUser];
+    fakeTweet.tweetText = content;
+    fakeTweet.createdAt = [[NSDate alloc] init];
+    fakeTweet.favorited = NO;
+    fakeTweet.retweeted = NO;
+    
+    [self.tweets replaceObjectsInRange:NSMakeRange(0, 0) withObjectsFromArray:@[fakeTweet]];
+    [self.tableView reloadData];
+}
+
+- (void)didCancelTweet {
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 @end

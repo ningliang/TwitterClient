@@ -10,8 +10,9 @@
 #import "TwitterClient.h"
 #import "TweetCell.h"
 #import "TweetDetailViewController.h"
+#import "ComposeTweetViewController.h";
 
-@interface TweetsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, TweetDetailDelegate>
+@interface TweetsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, TweetDetailDelegate, ComposeTweetDelegate>
 
 @property (nonatomic, strong) NSMutableArray *tweets;
 

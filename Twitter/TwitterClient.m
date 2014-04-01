@@ -60,7 +60,7 @@
            tweet.retweetId = dictionary[@"id_str"];
            tweet.retweeted = YES;
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Retweet tweet error");
+        NSLog(@"Retweet tweet error: %@", [error description]);
     }];
 }
 
@@ -73,7 +73,7 @@
                tweet.retweetId = nil;
                tweet.retweeted = NO;
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"Unretweet error");
+            NSLog(@"Unretweet error: %@", [error description]);
         }];
     }
 }
@@ -84,7 +84,7 @@
     [self POST:@"favorites/create.json" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         tweet.favorited = YES;
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Favorite failure");
+        NSLog(@"Favorite failure: %@", [error description]);
     }];
 }
 
@@ -93,7 +93,7 @@
     [self POST:@"favorites/destroy.json" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         tweet.favorited = NO;
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Unfavorite failure");
+        NSLog(@"Unfavorite failure: %@", [error description]);
     }];
 }
 
@@ -119,14 +119,21 @@
     }];
 }
 
+- (void)tweet:(NSString *)content {
+    NSDictionary *params = @{@"status": content};
+    [self POST:@"statuses/update" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"Tweet success");
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Tweet error: %@", [error description]);
+    }];
+}
 
 + (TwitterClient *)sharedInstance {
     static dispatch_once_t pred;
     static TwitterClient *sharedInstance;
 
-    // TODO switch to my key once it's working
-    // NSString *key = @"LQZSbcVLkv5iYDaVFsX15A4T1";
-    // NSString *secret = @"rbGecKKprYzpwDTPrfkpYrTqFq7w6B37xkv8VamQRc2lEVLWrr";
+    // NSString *key = @"u8jKZDtrPZ11oCGyQBcRODJxF";
+    // NSString *secret = @"TAEx5IVAuXglhi7zDUI8DAtthrPJz0zMtpZoS5lgPB1I4ypJYC";
 
     NSString *key = @"wrou647dSAp3OinHmsVKYw";
     NSString *secret = @"Y1H5mOBxHMIDkW6KMeiJAd4G0VFTSA2GdVKq5SEdB4";

@@ -20,8 +20,9 @@
 @property (nonatomic, assign) NSInteger favoriteCount;
 @property (nonatomic, assign) BOOL favorited;
 @property (nonatomic, assign) BOOL retweeted;
-
 @property (nonatomic, strong) NSString *retweetId;
+
+@property (nonatomic, strong) NSDate *createdAt;
 
 - (NSString *)formattedAge;
 - (NSString *)formattedDate;

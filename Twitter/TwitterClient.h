@@ -21,6 +21,7 @@
 - (void)unretweetTweet:(Tweet *)tweet;
 - (void)favoriteTweet:(Tweet *)tweet;
 - (void)unfavoriteTweet:(Tweet *)tweet;
+- (void)tweet:(NSString *)content;
 
 + (TwitterClient *)sharedInstance;
 
