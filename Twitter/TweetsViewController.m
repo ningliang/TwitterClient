@@ -117,22 +117,31 @@
     [cell refresh];
 }
 
-- (void)didReply:(Tweet *)tweet {
-    // TODO open the compose page
+- (void)didReply:(id)sender {
+    TweetCell *cell = sender;
+    Tweet *tweet = cell.tweet;
+    NSString *content = [NSString stringWithFormat:@"@%@ ", tweet.user.userName];
+    [self openComposeView:content];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     Tweet *tweet = self.tweets[indexPath.row];
     TweetDetailViewController *tweetDetailViewController = [[TweetDetailViewController alloc] init];
     tweetDetailViewController.tweet = tweet;
+    tweetDetailViewController.delegate = self;
     [self.navigationController pushViewController:tweetDetailViewController animated:YES];
 }
 
 - (void)onNewTweetClick {
+    [self openComposeView:nil];
+}
+
+- (void)openComposeView:(NSString *)contentOrNil {
     ComposeTweetViewController *composeTweetViewController = [[ComposeTweetViewController alloc] init];
     composeTweetViewController.delegate = self;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:composeTweetViewController];
     
+    composeTweetViewController.initialContent = contentOrNil;
     [self presentViewController:navController animated:YES completion:nil];
 }
 

@@ -17,8 +17,9 @@
 
 @end
 
-@interface ComposeTweetViewController : UIViewController
+@interface ComposeTweetViewController : UIViewController <UITextViewDelegate>
 
 @property (nonatomic, assign) id<ComposeTweetDelegate> delegate;
+@property (nonatomic, strong) NSString *initialContent;
 
 @end

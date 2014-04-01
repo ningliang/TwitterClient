@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "Tweet.h"
+#import "ComposeTweetViewController.h"
 
-@interface TweetDetailViewController : UIViewController
+@interface TweetDetailViewController : UIViewController <ComposeTweetDelegate>
 
 @property (nonatomic, strong) Tweet *tweet;
+@property (nonatomic, strong) id<ComposeTweetDelegate> delegate;
 
 @end

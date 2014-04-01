@@ -62,7 +62,13 @@
 }
 
 - (void)onReplyClick {
-    // TODO present a compose view
+    NSString *content = [NSString stringWithFormat:@"@%@ ", self.tweet.user.userName];
+    ComposeTweetViewController *composeTweetViewController = [[ComposeTweetViewController alloc] init];
+    composeTweetViewController.delegate = self;
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:composeTweetViewController];
+    
+    composeTweetViewController.initialContent = content;
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)onRetweetClick {
@@ -73,6 +79,14 @@
 - (void)onFavoriteClick {
     [self.tweet toggleFavorite];
     [self refresh];
+}
+
+- (void)didSaveTweet:(NSString *)content {
+    [self.delegate didSaveTweet:content];
+}
+
+- (void)didCancelTweet {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)refresh {

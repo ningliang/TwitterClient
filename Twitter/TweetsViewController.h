@@ -10,7 +10,7 @@
 #import "TwitterClient.h"
 #import "TweetCell.h"
 #import "TweetDetailViewController.h"
-#import "ComposeTweetViewController.h";
+#import "ComposeTweetViewController.h"
 
 @interface TweetsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, TweetDetailDelegate, ComposeTweetDelegate>
 
