@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "BDBOAuth1RequestOperationManager.h"
+#import "Tweet.h"
 
 @interface TwitterClient : BDBOAuth1RequestOperationManager
 
@@ -16,6 +17,10 @@
 - (void) logout;
 
 - (void)getHomeTimeline:(void (^)(NSMutableArray *tweets))success;
+- (void)retweetTweet:(Tweet *)tweet;
+- (void)unretweetTweet:(Tweet *)tweet;
+- (void)favoriteTweet:(Tweet *)tweet;
+- (void)unfavoriteTweet:(Tweet *)tweet;
 
 + (TwitterClient *)sharedInstance;
 

@@ -51,6 +51,52 @@
                            }];
 }
 
+- (void)retweetTweet:(Tweet *)tweet {
+    NSString *path = [NSString stringWithFormat:@"statuses/retweet/%@.json", tweet.tweetId];
+    
+    [self POST:path parameters:nil
+       success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary *dictionary = responseObject;
+           tweet.retweetId = dictionary[@"id_str"];
+           tweet.retweeted = YES;
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Retweet tweet error");
+    }];
+}
+
+- (void)unretweetTweet:(Tweet *)tweet {
+    if (tweet.retweetId) {
+        NSString *path = [NSString stringWithFormat:@"statuses/destroy/%@.json", tweet.retweetId];
+        
+        [self POST:path parameters:nil
+           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               tweet.retweetId = nil;
+               tweet.retweeted = NO;
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"Unretweet error");
+        }];
+    }
+}
+
+- (void)favoriteTweet:(Tweet *)tweet {
+    NSDictionary *params = @{@"id": tweet.tweetId };
+    
+    [self POST:@"favorites/create.json" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        tweet.favorited = YES;
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Favorite failure");
+    }];
+}
+
+- (void)unfavoriteTweet:(Tweet *)tweet {
+    NSDictionary *params = @{@"id": tweet.tweetId };
+    [self POST:@"favorites/destroy.json" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        tweet.favorited = NO;
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Unfavorite failure");
+    }];
+}
+
 - (void)logout {
     [self deauthorize];
     [User setCurrentUser:nil];

@@ -33,7 +33,7 @@
     [super viewDidLoad];
 
     // Nav bar
-    self.navigationItem.title = @"Tweets";
+    self.navigationItem.title = @"Home";
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Sign Out" style:UIBarButtonItemStylePlain target:self action:@selector(onSignoutClick)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"New" style:UIBarButtonItemStylePlain target:self action:@selector(onNewTweetClick)];
     
@@ -124,6 +124,14 @@
 - (void)didReply:(Tweet *)tweet {
     
 }
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    Tweet *tweet = self.tweets[indexPath.row];
+    TweetDetailViewController *tweetDetailViewController = [[TweetDetailViewController alloc] init];
+    tweetDetailViewController.tweet = tweet;
+    [self.navigationController pushViewController:tweetDetailViewController animated:YES];
+}
+
 
 
 @end

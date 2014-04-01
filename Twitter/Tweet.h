@@ -11,6 +11,7 @@
 
 @interface Tweet : NSObject
 
+@property (nonatomic, strong) NSString *tweetId;
 @property (nonatomic, strong) NSString *tweetText;
 @property (nonatomic, strong) User *user;
 @property (nonatomic, strong) NSString *retweetedByUserScreenName;
@@ -20,7 +21,10 @@
 @property (nonatomic, assign) BOOL favorited;
 @property (nonatomic, assign) BOOL retweeted;
 
+@property (nonatomic, strong) NSString *retweetId;
+
 - (NSString *)formattedAge;
+- (NSString *)formattedDate;
 
 - (void)toggleRetweet;
 - (void)toggleFavorite;
