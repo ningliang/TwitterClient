@@ -43,6 +43,11 @@
     TweetsViewController *tweetsViewController = [[TweetsViewController alloc] init];
     self.tweetsViewNavController = [[UINavigationController alloc] initWithRootViewController:tweetsViewController];
     
+    UIColor *twitterBlue = [UIColor colorWithRed:0.333 green:0.675 blue:0.933 alpha:1.0];
+    
+    [self.loginViewNavController.navigationBar setBarTintColor:twitterBlue];
+    [self.tweetsViewNavController.navigationBar setBarTintColor:twitterBlue];
+    
     [self updateRootViewController];
     [self.window makeKeyAndVisible];
     

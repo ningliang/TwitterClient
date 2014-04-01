@@ -34,7 +34,9 @@
 
     // Nav bar
     self.navigationItem.title = @"Home";
+
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Sign Out" style:UIBarButtonItemStylePlain target:self action:@selector(onSignoutClick)];
+    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"New" style:UIBarButtonItemStylePlain target:self action:@selector(onNewTweetClick)];
     
     // Table view setup
@@ -140,6 +142,8 @@
     ComposeTweetViewController *composeTweetViewController = [[ComposeTweetViewController alloc] init];
     composeTweetViewController.delegate = self;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:composeTweetViewController];
+    
+    [navController.navigationBar setBarTintColor:[UIColor colorWithRed:0.333 green:0.675 blue:0.933 alpha:1.0]];
     
     composeTweetViewController.initialContent = contentOrNil;
     [self presentViewController:navController animated:YES completion:nil];
