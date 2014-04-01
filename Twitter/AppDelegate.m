@@ -7,16 +7,55 @@
 //
 
 #import "AppDelegate.h"
+#import "LoginViewController.h"
+
+@implementation NSURL (dictionaryFromQueryString)
+-(NSDictionary *) dictionaryFromQueryString{
+    
+    NSString *query = [self query];
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:0];
+    NSArray *pairs = [query componentsSeparatedByString:@"&"];
+    
+    for (NSString *pair in pairs) {
+        NSArray *elements = [pair componentsSeparatedByString:@"="];
+        NSString *key = [[elements objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *val = [[elements objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        
+        [dict setObject:val forKey:key];
+    }
+    return dict;
+}
+@end
+
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor whiteColor];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRootViewController) name:@"userDidLogIn" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRootViewController) name:@"userDidLogOut" object:nil];
+    
+    LoginViewController *loginViewController = [[LoginViewController alloc] init];
+    self.loginViewNavController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+    
+    TweetsViewController *tweetsViewController = [[TweetsViewController alloc] init];
+    self.tweetsViewNavController = [[UINavigationController alloc] initWithRootViewController:tweetsViewController];
+    
+    [self updateRootViewController];
     [self.window makeKeyAndVisible];
+    
     return YES;
+}
+
+- (void)updateRootViewController {
+    User *user = [User currentUser];
+    if (user) {
+        self.window.rootViewController = self.tweetsViewNavController;
+    } else {
+        self.window.rootViewController = self.loginViewNavController;
+    }
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -44,6 +83,22 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+// Handle the return from Twitter
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    
+    if ([url.scheme isEqualToString:@"twitterclient"]) {
+        if ([url.host isEqualToString:@"request"]) {
+            NSDictionary *parameters = [url dictionaryFromQueryString];
+            if (parameters[@"oauth_token"] && parameters[@"oauth_verifier"]) {
+                TwitterClient *twitterClient = [TwitterClient sharedInstance];
+                [twitterClient finishAuthorization:url.query];
+            }
+        }
+        return YES;
+    }
+    return NO;
 }
 
 @end
