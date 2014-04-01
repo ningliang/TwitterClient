@@ -83,12 +83,6 @@
     [[TwitterClient sharedInstance] logout];
 }
 
-- (void)onNewTweetClick {
-    ComposeTweetViewController *composeTweetViewController = [[ComposeTweetViewController alloc] init];
-    composeTweetViewController.delegate = self;
-    [self.navigationController pushViewController:composeTweetViewController animated:YES];
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [self.tweets count];
 }
@@ -134,6 +128,14 @@
     [self.navigationController pushViewController:tweetDetailViewController animated:YES];
 }
 
+- (void)onNewTweetClick {
+    ComposeTweetViewController *composeTweetViewController = [[ComposeTweetViewController alloc] init];
+    composeTweetViewController.delegate = self;
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:composeTweetViewController];
+    
+    [self presentViewController:navController animated:YES completion:nil];
+}
+
 - (void)didSaveTweet:(NSString *)content {
     [self.navigationController popViewControllerAnimated:YES];
     [[TwitterClient sharedInstance] tweet:content];
@@ -147,10 +149,11 @@
     
     [self.tweets replaceObjectsInRange:NSMakeRange(0, 0) withObjectsFromArray:@[fakeTweet]];
     [self.tableView reloadData];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)didCancelTweet {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

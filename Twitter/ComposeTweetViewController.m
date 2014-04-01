@@ -43,6 +43,9 @@
     self.navigationItem.title = @"Compose";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Tweet" style:UIBarButtonItemStylePlain target:self action:@selector(onSaveTweetClick)];
 
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(onCancelTweetClick)];
+
+    
     User  *user = [User currentUser];
     self.userNameLabel.text = [NSString stringWithFormat:@"@%@", user.userName];
     self.fullNameLabel.text = user.fullName;
@@ -60,6 +63,10 @@
 - (void)onSaveTweetClick {
     NSString *content = self.tweetTextView.text;
     [self.delegate didSaveTweet:content];
+}
+
+- (void)onCancelTweetClick {
+    [self.delegate didCancelTweet];
 }
 
 @end
