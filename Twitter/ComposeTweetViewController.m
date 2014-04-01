@@ -60,6 +60,8 @@
     self.tweetTextView.delegate = self;
     
     [self.tweetTextView becomeFirstResponder];
+    
+    [self textViewDidChange:self.tweetTextView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -92,7 +94,7 @@
 
 - (void)textViewDidChange:(UITextView *)textView {
     NSInteger charsLeft = 140 - textView.text.length;
-    NSString *message = [NSString stringWithFormat:@"%i chars left", charsLeft];
+    NSString *message = [NSString stringWithFormat:@"%i left", charsLeft];
     self.charsLeftLabel.text = message;
 }
 
