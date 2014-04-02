@@ -12,11 +12,22 @@
 @implementation Tweet
 
 - (NSString *)formattedAge {
-    return @"age";
+    NSDate *now = [[NSDate alloc] init];
+    
+    int time = [now timeIntervalSinceDate:self.createdAt];
+    if (time > 86400) {
+        return [NSString stringWithFormat:@"%id", (time / 86400)];
+    } else if (time > 3600) {
+        return [NSString stringWithFormat:@"%ih", (time / 3600)];
+    } else {
+        return [NSString stringWithFormat:@"%im", (time / 60)];
+    }
 }
 
 - (NSString *)formattedDate {
-    return @"date";
+    return [NSDateFormatter localizedStringFromDate:self.createdAt
+                                                          dateStyle:NSDateFormatterShortStyle
+                                                          timeStyle:NSDateFormatterShortStyle];
 }
 
 // TODO network call
