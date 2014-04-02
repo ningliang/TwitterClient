@@ -121,7 +121,7 @@
 
 - (void)tweet:(NSString *)content {
     NSDictionary *params = @{@"status": content};
-    [self POST:@"statuses/update" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self POST:@"statuses/update.json" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"Tweet success");
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Tweet error: %@", [error description]);
@@ -132,8 +132,8 @@
     static dispatch_once_t pred;
     static TwitterClient *sharedInstance;
 
-    NSString *key = @"FLzkKA1idvP3wN2K9rtMMahMw";
-    NSString *secret = @"Q9bDv8P8gICZW5GbWTaDS2HPMfc1gSnctCggpCLviNMYArHwcA";
+    NSString *key = @"Vc48uvEWxWBzbjKxXJiPQB3jD";
+    NSString *secret = @"psk2l9M1pWASDjyeIgK4deTR247YToA66EjjnJtfwpJsGGg2Pe";
 
     // NSString *key = @"wrou647dSAp3OinHmsVKYw";
     // NSString *secret = @"Y1H5mOBxHMIDkW6KMeiJAd4G0VFTSA2GdVKq5SEdB4";
