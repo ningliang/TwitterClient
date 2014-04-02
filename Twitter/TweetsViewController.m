@@ -188,14 +188,12 @@
         if (!self.loadingMore) {
             self.loadingMore = YES;
             Tweet *lastTweet = [self.tweets lastObject];
-            NSInteger maxId = [lastTweet.tweetId integerValue] - 1;
-            NSString *maxIdParam = [@(maxId) stringValue];
-            
             [[TwitterClient sharedInstance] getHomeTimeline:^(NSMutableArray *tweets) {
+                [self.tweets removeLastObject];
                 [self.tweets addObjectsFromArray:tweets];
                 [self.tableView reloadData];
                 self.loadingMore = NO;
-            } withMaxId:maxIdParam];
+            } withMaxId:lastTweet.tweetId];
         }
     }
 }

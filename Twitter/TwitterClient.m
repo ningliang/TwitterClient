@@ -143,8 +143,8 @@
     static dispatch_once_t pred;
     static TwitterClient *sharedInstance;
 
-    NSString *key = @"Vc48uvEWxWBzbjKxXJiPQB3jD";
-    NSString *secret = @"psk2l9M1pWASDjyeIgK4deTR247YToA66EjjnJtfwpJsGGg2Pe";
+    NSString *key = @"FLzkKA1idvP3wN2K9rtMMahMw";
+    NSString *secret = @"Q9bDv8P8gICZW5GbWTaDS2HPMfc1gSnctCggpCLviNMYArHwcA";
     NSURL *baseUrl = [NSURL URLWithString:@"https://api.twitter.com/1.1/"];
     
     dispatch_once(&pred, ^{
