@@ -31,5 +31,6 @@
 - (void)toggleFavorite;
 
 + (Tweet *)tweetWithDictionary:(NSDictionary *)dictionary;
++ (Tweet *)dummyTweet:(NSString *)content withUser:(User *)user;
 
 @end

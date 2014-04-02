@@ -16,12 +16,12 @@
 - (void) finishAuthorization:(NSString *)queryString;
 - (void) logout;
 
-- (void)getHomeTimeline:(void (^)(NSMutableArray *tweets))success;
+- (void)getHomeTimeline:(void (^)(NSMutableArray *tweets))success withMaxId:(NSString *)maxId;
 - (void)retweetTweet:(Tweet *)tweet;
 - (void)unretweetTweet:(Tweet *)tweet;
 - (void)favoriteTweet:(Tweet *)tweet;
 - (void)unfavoriteTweet:(Tweet *)tweet;
-- (void)tweet:(NSString *)content;
+- (void)tweet:(NSString *)content withReplyToId:(NSString *)replyToIdOrNil;
 
 + (TwitterClient *)sharedInstance;
 

@@ -35,8 +35,6 @@ static User *_currentUser;
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *dictionary = [defaults dictionaryForKey:@"current_user"];
         
-        NSLog(@"Current User: %@", dictionary);
-        
         if (dictionary) {
             _currentUser = [User userWithDictionary:dictionary];
         }

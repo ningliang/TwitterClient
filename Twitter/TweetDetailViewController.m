@@ -67,7 +67,9 @@
     composeTweetViewController.delegate = self;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:composeTweetViewController];
     
+    // setup compose view
     composeTweetViewController.initialContent = content;
+    composeTweetViewController.inReplyToId = self.tweet.tweetId;
     [self presentViewController:navController animated:YES completion:nil];
 }
 
@@ -81,8 +83,8 @@
     [self refresh];
 }
 
-- (void)didSaveTweet:(NSString *)content {
-    [self.delegate didSaveTweet:content];
+- (void)didSaveTweet:(NSString *)content withInReplyToId:(NSString *)replyToIdOrNil{
+    [self.delegate didSaveTweet:content withInReplyToId:replyToIdOrNil];
 }
 
 - (void)didCancelTweet {

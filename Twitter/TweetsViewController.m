@@ -14,6 +14,7 @@
 
 @property (nonatomic, strong) TweetCell *prototypeCell;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
+@property (nonatomic, assign) BOOL loadingMore;
 
 @end
 
@@ -54,6 +55,9 @@
     [self.refreshControl addTarget:self action:@selector(reloadData) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:self.refreshControl];
 
+    // Infinite scroll variable
+    self.loadingMore = NO;
+    
     [self reloadData];
 }
 
@@ -78,11 +82,13 @@
         // Reload cells
         self.tweets = tweets;
         [self.tableView reloadData];
-    }];
+    } withMaxId:nil];
 }
 
 - (void)onSignoutClick {
     [[TwitterClient sharedInstance] logout];
+    self.tweets = [[NSMutableArray alloc] init];
+    [self.tableView reloadData];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -123,7 +129,7 @@
     TweetCell *cell = sender;
     Tweet *tweet = cell.tweet;
     NSString *content = [NSString stringWithFormat:@"@%@ ", tweet.user.userName];
-    [self openComposeView:content];
+    [self openComposeView:content withReplyToId:tweet.tweetId];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -135,12 +141,13 @@
 }
 
 - (void)onNewTweetClick {
-    [self openComposeView:nil];
+    [self openComposeView:nil withReplyToId:nil];
 }
 
-- (void)openComposeView:(NSString *)contentOrNil {
+- (void)openComposeView:(NSString *)contentOrNil withReplyToId:(NSString *)replyToIdOrNil {
     ComposeTweetViewController *composeTweetViewController = [[ComposeTweetViewController alloc] init];
     composeTweetViewController.delegate = self;
+
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:composeTweetViewController];
     
     [navController.navigationBar setBarTintColor:[UIColor colorWithRed:0.333 green:0.675 blue:0.933 alpha:1.0]];
@@ -149,27 +156,48 @@
 
     
     composeTweetViewController.initialContent = contentOrNil;
+    composeTweetViewController.inReplyToId = replyToIdOrNil;
     [self presentViewController:navController animated:YES completion:nil];
 }
 
-- (void)didSaveTweet:(NSString *)content {
+- (void)didSaveTweet:(NSString *)content withInReplyToId:(NSString *)inReplyToIdOrNil {
     [self.navigationController popViewControllerAnimated:YES];
-    [[TwitterClient sharedInstance] tweet:content];
+    [[TwitterClient sharedInstance] tweet:content withReplyToId:inReplyToIdOrNil];
 
-    Tweet *fakeTweet = [[Tweet alloc] init];
-    fakeTweet.user = [User currentUser];
-    fakeTweet.tweetText = content;
-    fakeTweet.createdAt = [[NSDate alloc] init];
-    fakeTweet.favorited = NO;
-    fakeTweet.retweeted = NO;
-    
-    [self.tweets replaceObjectsInRange:NSMakeRange(0, 0) withObjectsFromArray:@[fakeTweet]];
+    Tweet *dummyTweet = [Tweet dummyTweet:content withUser:[User currentUser]];
+    [self.tweets replaceObjectsInRange:NSMakeRange(0, 0) withObjectsFromArray:@[dummyTweet]];
     [self.tableView reloadData];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)didCancelTweet {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    CGPoint offset = scrollView.contentOffset;
+    CGRect bounds = scrollView.bounds;
+    CGSize size = scrollView.contentSize;
+    UIEdgeInsets inset = scrollView.contentInset;
+    float y = offset.y + bounds.size.height - inset.bottom;
+    float h = size.height;
+    
+    float reload_distance = 10;
+    if(y > h + reload_distance) {
+        // Not thread safe, but only one thread (UIThread) accessing this for now
+        if (!self.loadingMore) {
+            self.loadingMore = YES;
+            Tweet *lastTweet = [self.tweets lastObject];
+            NSInteger maxId = [lastTweet.tweetId integerValue] - 1;
+            NSString *maxIdParam = [@(maxId) stringValue];
+            
+            [[TwitterClient sharedInstance] getHomeTimeline:^(NSMutableArray *tweets) {
+                [self.tweets addObjectsFromArray:tweets];
+                [self.tableView reloadData];
+                self.loadingMore = NO;
+            } withMaxId:maxIdParam];
+        }
+    }
 }
 
 @end

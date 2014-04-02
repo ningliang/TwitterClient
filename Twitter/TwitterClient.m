@@ -104,13 +104,20 @@
 }
 
 
-- (void)getHomeTimeline:(void (^)(NSMutableArray *tweets))success {
+- (void)getHomeTimeline:(void (^)(NSMutableArray *tweets))success withMaxId:(NSString *)maxIdOrNil {
+    
+    NSMutableDictionary *params = nil;
+    if (maxIdOrNil) {
+        params = [[NSMutableDictionary alloc] init];
+        params[@"max_id"] = maxIdOrNil;
+    }
+
     [self GET:@"statuses/home_timeline.json"
-   parameters:nil
+   parameters:params
       success:^(AFHTTPRequestOperation *operation, id responseObject) {
           NSMutableArray *tweets = [[NSMutableArray alloc] init];
-          for (NSDictionary *dictionary in responseObject) {
-              Tweet *tweet = [Tweet tweetWithDictionary:dictionary];
+          for (NSDictionary *params in responseObject) {
+              Tweet *tweet = [Tweet tweetWithDictionary:params];
               [tweets addObject:tweet];
           }
           success(tweets);
@@ -119,8 +126,12 @@
     }];
 }
 
-- (void)tweet:(NSString *)content {
-    NSDictionary *params = @{@"status": content};
+- (void)tweet:(NSString *)content withReplyToId:(NSString *)replyToIdOrNil {
+    NSMutableDictionary *params = [@{@"status": content} mutableCopy];
+    if (replyToIdOrNil) {
+        params[@"in_reply_to_status_id"] = replyToIdOrNil;
+    }
+    
     [self POST:@"statuses/update.json" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"Tweet success");
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -134,9 +145,6 @@
 
     NSString *key = @"Vc48uvEWxWBzbjKxXJiPQB3jD";
     NSString *secret = @"psk2l9M1pWASDjyeIgK4deTR247YToA66EjjnJtfwpJsGGg2Pe";
-
-    // NSString *key = @"wrou647dSAp3OinHmsVKYw";
-    // NSString *secret = @"Y1H5mOBxHMIDkW6KMeiJAd4G0VFTSA2GdVKq5SEdB4";
     NSURL *baseUrl = [NSURL URLWithString:@"https://api.twitter.com/1.1/"];
     
     dispatch_once(&pred, ^{

@@ -73,7 +73,7 @@
 - (void)onSaveTweetClick {
     NSString *content = self.tweetTextView.text;
     if (content.length > 0) {
-        [self.delegate didSaveTweet:content];
+        [self.delegate didSaveTweet:content withInReplyToId:self.inReplyToId];
     }
 }
 

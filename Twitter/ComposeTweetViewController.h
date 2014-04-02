@@ -12,7 +12,7 @@
 
 @protocol ComposeTweetDelegate <NSObject>
 
-- (void)didSaveTweet:(NSString *)content;
+- (void)didSaveTweet:(NSString *)content withInReplyToId:(NSString *)inReplyToIdOrNil;
 - (void)didCancelTweet;
 
 @end
@@ -21,5 +21,6 @@
 
 @property (nonatomic, assign) id<ComposeTweetDelegate> delegate;
 @property (nonatomic, strong) NSString *initialContent;
+@property (nonatomic, strong) NSString *inReplyToId;
 
 @end

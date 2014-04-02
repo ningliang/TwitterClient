@@ -82,4 +82,16 @@
     return tweet;
 }
 
++ (Tweet *)dummyTweet:(NSString *)content withUser:(User *)user {
+    Tweet *fakeTweet = [[Tweet alloc] init];
+
+    fakeTweet.user = user;
+    fakeTweet.tweetText = content;
+    fakeTweet.createdAt = [[NSDate alloc] init];
+    fakeTweet.favorited = NO;
+    fakeTweet.retweeted = NO;
+    
+    return fakeTweet;
+}
+
 @end
