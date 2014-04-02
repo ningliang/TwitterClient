@@ -144,6 +144,9 @@
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:composeTweetViewController];
     
     [navController.navigationBar setBarTintColor:[UIColor colorWithRed:0.333 green:0.675 blue:0.933 alpha:1.0]];
+    [navController.navigationBar setTintColor:[UIColor whiteColor]];
+    [navController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+
     
     composeTweetViewController.initialContent = contentOrNil;
     [self presentViewController:navController animated:YES completion:nil];

@@ -47,7 +47,11 @@
     
     [self.loginViewNavController.navigationBar setBarTintColor:twitterBlue];
     [self.tweetsViewNavController.navigationBar setBarTintColor:twitterBlue];
-    
+    [self.loginViewNavController.navigationBar setTintColor:[UIColor whiteColor]];
+    [self.tweetsViewNavController.navigationBar setTintColor:[UIColor whiteColor]];
+    [self.loginViewNavController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+    [self.tweetsViewNavController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+
     [self updateRootViewController];
     [self.window makeKeyAndVisible];
     

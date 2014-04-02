@@ -30,7 +30,6 @@
                                                           timeStyle:NSDateFormatterShortStyle];
 }
 
-// TODO network call
 - (void)toggleRetweet {
     if (self.retweeted) {
         self.retweetCount -= 1;
@@ -42,14 +41,13 @@
     self.retweeted = !self.retweeted;
 }
 
-// TODO network call
 - (void)toggleFavorite {
     if (self.favorited) {
         self.favoriteCount -= 1;
-        [[TwitterClient sharedInstance] favoriteTweet:self];
+        [[TwitterClient sharedInstance] unfavoriteTweet:self];
     } else {
         self.favoriteCount += 1;
-        [[TwitterClient sharedInstance] unfavoriteTweet:self];
+        [[TwitterClient sharedInstance] favoriteTweet:self];
     }
     self.favorited = !self.favorited;
 }
