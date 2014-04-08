@@ -73,6 +73,11 @@ static User *_currentUser;
     user.fullName = dictionary[@"name"];
     user.profileImageUrl = dictionary[@"profile_image_url"];
     user.profileImageLargeUrl = [user.profileImageUrl stringByReplacingOccurrencesOfString:@"_normal" withString:@"_bigger"];
+    user.coverImageUrl = dictionary[@"profile_background_image_url"];
+    
+    user.location = dictionary[@"location"];
+    user.websiteUrl = dictionary[@"url"];
+    user.userDescription = dictionary[@"description"];
 
     user.tweetCount = [dictionary[@"statuses_count"] intValue];
     user.followersCount = [dictionary[@"followers_count"] intValue];

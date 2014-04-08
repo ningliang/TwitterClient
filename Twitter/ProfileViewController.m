@@ -9,6 +9,7 @@
 #import "ProfileViewController.h"
 #import "TwitterClient.h"
 #import "TweetsViewController.h"
+#import "UIImageView+AFNetworking.h"
 
 @interface ProfileViewController ()
 
@@ -16,10 +17,15 @@
 @property (weak, nonatomic) IBOutlet UILabel *followingCountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *followersCountLabel;
 
-@property (weak, nonatomic) IBOutlet UIView *headerView;
+// Child view controllers
 @property (weak, nonatomic) IBOutlet UIView *tweetsView;
-
 @property (strong, nonatomic) TweetsViewController *tweetsViewController;
+
+// Profile view outlets
+@property (weak, nonatomic) IBOutlet UILabel *fullNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
 
 @end
 
@@ -53,19 +59,35 @@
         [self refresh:user];
     }];
     
+    // Setup image
+    [self.profileImageView.layer setBorderColor:[UIColor whiteColor].CGColor];
+    [self.profileImageView.layer setBorderWidth:4];
+    [self.profileImageView.layer setCornerRadius:4];
+    [self.profileImageView.layer setBackgroundColor:[UIColor clearColor].CGColor];
+    [self.profileImageView.layer setMasksToBounds:true];
+
+    [self.coverImageView setContentMode:UIViewContentModeScaleAspectFill];
+    [self.coverImageView.layer setMasksToBounds:true];
+    
+    // Tweets subview
     self.tweetsViewController = [[TweetsViewController alloc] init];
     self.tweetsViewController.allowProfileVisit = NO;
     self.tweetsViewController.delegate = self;
     [self addChildViewController:self.tweetsViewController];
     [self.tweetsView addSubview:self.tweetsViewController.view];
-    
-    // TODO set the header view correctly
+    [self.tweetsViewController didMoveToParentViewController:self];
 }
 
 - (void)refresh:(User *)user {
     self.tweetCountLabel.text = [user prettyTweetCount];
     self.followersCountLabel.text = [user prettyFollowersCount];
     self.followingCountLabel.text = [user prettyFollowingCount];
+    
+    self.fullNameLabel.text = user.fullName;
+    self.userNameLabel.text = [NSString stringWithFormat:@"@%@", user.userName];
+    [self.profileImageView setImageWithURL:[NSURL URLWithString:user.profileImageLargeUrl]];
+    
+    [self.coverImageView setImageWithURL:[NSURL URLWithString:user.coverImageUrl]];
 }
 
 - (void) fetchTweets:(void (^)(NSArray *tweets))block withSinceId:(NSString *)sinceIdOrNil {

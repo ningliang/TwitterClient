@@ -13,8 +13,12 @@
 @property (nonatomic, assign) NSInteger userId;
 @property (nonatomic, strong) NSString *userName;
 @property (nonatomic, strong) NSString *fullName;
+@property (nonatomic, strong) NSString *userDescription;
 @property (nonatomic, strong) NSString *profileImageUrl;
 @property (nonatomic, strong) NSString *profileImageLargeUrl;
+@property (nonatomic, strong) NSString *coverImageUrl;
+@property (nonatomic, strong) NSString *location;
+@property (nonatomic, strong) NSString *websiteUrl;
 
 @property (nonatomic, assign) NSInteger tweetCount;
 @property (nonatomic, assign) NSInteger followingCount;
