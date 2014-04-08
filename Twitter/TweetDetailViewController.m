@@ -52,6 +52,10 @@
     [self.favoriteButton addTarget:self action:@selector(onFavoriteClick) forControlEvents:UIControlEventTouchUpInside];
     [self.replyButton addTarget:self action:@selector(onReplyClick) forControlEvents:UIControlEventTouchUpInside];
     
+    // Reply button
+    UIImage *replyImage = [UIImage imageNamed:@"reply.png"];
+    [self.replyButton setImage:replyImage forState:UIControlStateNormal];
+    
     [self refresh];
 }
 

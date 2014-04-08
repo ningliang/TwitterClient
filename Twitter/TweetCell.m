@@ -21,18 +21,15 @@
 @property (weak, nonatomic) IBOutlet UIButton *retweetButton;
 @property (weak, nonatomic) IBOutlet UIButton *favoriteButton;
 
+@property (weak, nonatomic) IBOutlet UILabel *retweetCountLabel;
+@property (weak, nonatomic) IBOutlet UILabel *favoriteCountLabel;
+
 @end
 
 @implementation TweetCell
 
 - (void)awakeFromNib
 {
-    // Initialization code
-    self.userImageView.layer.cornerRadius = 8.0;
-    self.userImageView.layer.masksToBounds = YES;
-    self.userImageView.layer.borderColor = [UIColor grayColor].CGColor;
-    self.userImageView.layer.borderWidth = 1.0;
-    
     // Bind buttons
     [self.replyButton addTarget:self action:@selector(onReply) forControlEvents:UIControlEventTouchUpInside];
     [self.retweetButton addTarget:self action:@selector(onRetweet) forControlEvents:UIControlEventTouchUpInside];
@@ -59,6 +56,8 @@
     self.fullNameLabel.text = self.tweet.user.fullName;
     self.userNameLabel.text = [NSString stringWithFormat:@"@%@", self.tweet.user.userName];
     self.ageLabel.text = [self.tweet formattedAge];
+    self.retweetCountLabel.text = [NSString stringWithFormat:@"%i", self.tweet.retweetCount];
+    self.favoriteCountLabel.text = [NSString stringWithFormat:@"%i", self.tweet.favoriteCount];
     
     [self.userImageView setImageWithURL:[NSURL URLWithString:self.tweet.user.profileImageUrl]];
     

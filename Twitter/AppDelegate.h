@@ -9,13 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "LoginViewController.h"
 #import "TweetsViewController.h"
+#import "MenuContainerViewController.h"
 #import "User.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) UINavigationController *loginViewNavController;
-@property (strong, nonatomic) UINavigationController *tweetsViewNavController;
+@property (strong, nonatomic) MenuContainerViewController *menuContainerViewController;
 
 - (void)updateRootViewController;
 

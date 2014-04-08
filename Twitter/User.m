@@ -17,7 +17,8 @@ static User *_currentUser;
       @"id": @(self.userId),
       @"screen_name": self.userName,
       @"name": self.fullName,
-      @"profile_image_url": self.profileImageUrl
+      @"profile_image_url": self.profileImageUrl,
+      @"profile_image_large_url": self.profileImageLargeUrl
     };    
 }
 
@@ -49,6 +50,9 @@ static User *_currentUser;
     user.userName = dictionary[@"screen_name"];
     user.fullName = dictionary[@"name"];
     user.profileImageUrl = dictionary[@"profile_image_url"];
+    user.profileImageLargeUrl = [user.profileImageUrl stringByReplacingOccurrencesOfString:@"_normal" withString:@"_bigger"];
+    
+    NSLog(@"%@", dictionary);
     
     return user;
 }

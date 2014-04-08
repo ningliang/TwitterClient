@@ -37,21 +37,15 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRootViewController) name:@"userDidLogIn" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRootViewController) name:@"userDidLogOut" object:nil];
     
+    UIColor *twitterBlue = [UIColor colorWithRed:0.333 green:0.675 blue:0.933 alpha:1.0];
     LoginViewController *loginViewController = [[LoginViewController alloc] init];
     self.loginViewNavController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
-    
-    TweetsViewController *tweetsViewController = [[TweetsViewController alloc] init];
-    self.tweetsViewNavController = [[UINavigationController alloc] initWithRootViewController:tweetsViewController];
-    
-    UIColor *twitterBlue = [UIColor colorWithRed:0.333 green:0.675 blue:0.933 alpha:1.0];
-    
     [self.loginViewNavController.navigationBar setBarTintColor:twitterBlue];
-    [self.tweetsViewNavController.navigationBar setBarTintColor:twitterBlue];
     [self.loginViewNavController.navigationBar setTintColor:[UIColor whiteColor]];
-    [self.tweetsViewNavController.navigationBar setTintColor:[UIColor whiteColor]];
     [self.loginViewNavController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
-    [self.tweetsViewNavController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
-
+    
+    self.menuContainerViewController = [[MenuContainerViewController alloc] init];
+    
     [self updateRootViewController];
     [self.window makeKeyAndVisible];
     
@@ -61,7 +55,7 @@
 - (void)updateRootViewController {
     User *user = [User currentUser];
     if (user) {
-        self.window.rootViewController = self.tweetsViewNavController;
+        self.window.rootViewController = self.menuContainerViewController;
     } else {
         self.window.rootViewController = self.loginViewNavController;
     }
