@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		17F9A5B413F34DA8B672F0A1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 137F53EDA71746E2AFCDD1B8 /* libPods.a */; };
+		3B18070C18F3E342008F9E9C /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B18070A18F3E342008F9E9C /* ProfileViewController.m */; };
+		3B18070D18F3E342008F9E9C /* ProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B18070B18F3E342008F9E9C /* ProfileViewController.xib */; };
 		3BB1AD0B18F3C6010021A35A /* MenuContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BB1AD0918F3C6010021A35A /* MenuContainerViewController.m */; };
 		3BB1AD0C18F3C6010021A35A /* MenuContainerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3BB1AD0A18F3C6010021A35A /* MenuContainerViewController.xib */; };
 		3BB1AD1018F3C7550021A35A /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BB1AD0E18F3C7550021A35A /* MenuViewController.m */; };
@@ -51,6 +53,9 @@
 
 /* Begin PBXFileReference section */
 		137F53EDA71746E2AFCDD1B8 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		3B18070918F3E342008F9E9C /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
+		3B18070A18F3E342008F9E9C /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
+		3B18070B18F3E342008F9E9C /* ProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileViewController.xib; sourceTree = "<group>"; };
 		3BB1AD0818F3C6010021A35A /* MenuContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuContainerViewController.h; sourceTree = "<group>"; };
 		3BB1AD0918F3C6010021A35A /* MenuContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuContainerViewController.m; sourceTree = "<group>"; };
 		3BB1AD0A18F3C6010021A35A /* MenuContainerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenuContainerViewController.xib; sourceTree = "<group>"; };
@@ -163,6 +168,9 @@
 				3BB1AD0D18F3C7550021A35A /* MenuViewController.h */,
 				3BB1AD0E18F3C7550021A35A /* MenuViewController.m */,
 				3BB1AD0F18F3C7550021A35A /* MenuViewController.xib */,
+				3B18070918F3E342008F9E9C /* ProfileViewController.h */,
+				3B18070A18F3E342008F9E9C /* ProfileViewController.m */,
+				3B18070B18F3E342008F9E9C /* ProfileViewController.xib */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -338,6 +346,7 @@
 				3BE316B418EB69580047C05C /* ComposeTweetViewController.xib in Resources */,
 				3BE9F85318E94A1400D249EE /* Images.xcassets in Resources */,
 				3BE3169918EA5CBF0047C05C /* LoginViewController.xib in Resources */,
+				3B18070D18F3E342008F9E9C /* ProfileViewController.xib in Resources */,
 				3BB1AD0C18F3C6010021A35A /* MenuContainerViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -399,6 +408,7 @@
 				3BE316A118EAA7840047C05C /* Tweet.m in Sources */,
 				3BB1AD1018F3C7550021A35A /* MenuViewController.m in Sources */,
 				3BE316AE18EB52D60047C05C /* TweetDetailViewController.m in Sources */,
+				3B18070C18F3E342008F9E9C /* ProfileViewController.m in Sources */,
 				3BB74F2218EA5633006ABC90 /* TwitterClient.m in Sources */,
 				3BE9F84D18E94A1400D249EE /* main.m in Sources */,
 				3BE316A918EB0B7B0047C05C /* TweetCell.m in Sources */,

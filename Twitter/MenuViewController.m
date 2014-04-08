@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *homeButton;
 @property (weak, nonatomic) IBOutlet UIButton *profileButton;
 @property (weak, nonatomic) IBOutlet UIButton *mentionsButton;
+@property (weak, nonatomic) IBOutlet UIButton *signOutButton;
 
 @property (weak, nonatomic) IBOutlet UILabel *fullNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
@@ -42,7 +43,12 @@
     self.fullNameLabel.text = user.fullName;
     self.userNameLabel.text = [NSString stringWithFormat:@"@%@", user.userName];
     [self.profileImageView setImageWithURL:[NSURL URLWithString:user.profileImageLargeUrl]];
-
+    
+    // Bind buttons
+    [self.homeButton addTarget:self.delegate action:@selector(didClickHome) forControlEvents:UIControlEventTouchUpInside];
+    [self.profileButton addTarget:self.delegate action:@selector(didClickProfile) forControlEvents:UIControlEventTouchUpInside];
+    [self.mentionsButton addTarget:self.delegate action:@selector(didClickMentions) forControlEvents:UIControlEventTouchUpInside];
+    [self.signOutButton addTarget:self.delegate action:@selector(didClickSignOut) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)didReceiveMemoryWarning

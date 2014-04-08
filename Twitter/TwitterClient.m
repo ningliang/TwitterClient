@@ -51,6 +51,12 @@
                            }];
 }
 
+- (void)logout {
+    [self deauthorize];
+    [User setCurrentUser:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"userDidLogOut" object:self];
+}
+
 - (void)retweetTweet:(Tweet *)tweet {
     NSString *path = [NSString stringWithFormat:@"statuses/retweet/%@.json", tweet.tweetId];
     
@@ -97,22 +103,30 @@
     }];
 }
 
-- (void)logout {
-    [self deauthorize];
-    [User setCurrentUser:nil];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"userDidLogOut" object:self];
+- (void)getHomeTimeline:(void (^)(NSMutableArray *tweets))success withMaxId:(NSString *)maxIdOrNil {
+    [self getTimeline:success withPath:@"statuses/home_timeline.json" withUserId:nil withMaxId:maxIdOrNil];
 }
 
+- (void)getUserTimeline:(void (^)(NSMutableArray *tweets))success withUserId:(NSInteger)userId withMaxId:(NSString *)maxIdOrNil {
+    [self getTimeline:success withPath:@"statuses/user_timeline.json" withUserId:[NSString stringWithFormat:@"%i", userId] withMaxId:maxIdOrNil];
+}
 
-- (void)getHomeTimeline:(void (^)(NSMutableArray *tweets))success withMaxId:(NSString *)maxIdOrNil {
+- (void)getMentionsTimeline:(void (^)(NSMutableArray *tweets))success withUserId:(NSInteger)userId withMaxId:(NSString *)maxIdOrNil {
+    [self getTimeline:success withPath:@"statuses/mentions_timeline.json" withUserId:[NSString stringWithFormat:@"%i", userId] withMaxId:maxIdOrNil];
+}
+
+- (void)getTimeline:(void (^)(NSMutableArray *tweets))success withPath:(NSString *)path withUserId:(NSString *)userIdOrNil withMaxId:(NSString *)maxIdOrNil {
     
-    NSMutableDictionary *params = nil;
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     if (maxIdOrNil) {
-        params = [[NSMutableDictionary alloc] init];
         params[@"max_id"] = maxIdOrNil;
     }
-
-    [self GET:@"statuses/home_timeline.json"
+    
+    if (userIdOrNil) {
+        params[@"user_id"] = userIdOrNil;
+    }
+    
+    [self GET:path
    parameters:params
       success:^(AFHTTPRequestOperation *operation, id responseObject) {
           NSMutableArray *tweets = [[NSMutableArray alloc] init];
@@ -121,9 +135,9 @@
               [tweets addObject:tweet];
           }
           success(tweets);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"GetTimeline error: %@", [error description]);
-    }];
+      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+          NSLog(@"GetTimeline error: %@", [error description]);
+      }];
 }
 
 - (void)tweet:(NSString *)content withReplyToId:(NSString *)replyToIdOrNil {
@@ -136,6 +150,15 @@
         NSLog(@"Tweet success");
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Tweet error: %@", [error description]);
+    }];
+}
+
+- (void)getUser:(NSInteger)userId success:(void (^)(User *user))success {
+    [self GET:@"users/show.json" parameters:@{@"user_id": @(userId)} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        User *user = [User userWithDictionary:responseObject];
+        success(user);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"User error: %@", [error description]);;
     }];
 }
 

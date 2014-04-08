@@ -11,6 +11,7 @@
                 <outlet property="mentionsButton" destination="5Vj-rD-uww" id="nto-h5-X3y"/>
                 <outlet property="profileButton" destination="4GR-zd-mv0" id="lmV-z4-VyE"/>
                 <outlet property="profileImageView" destination="ats-6b-IIg" id="S4B-KU-5OY"/>
+                <outlet property="signOutButton" destination="IQ9-pu-NaA" id="FJH-sj-Fbw"/>
                 <outlet property="userNameLabel" destination="MhR-Qd-z54" id="Ucu-WD-32d"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -78,6 +79,19 @@
                     <rect key="frame" x="40" y="231" width="64" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" title="Mentions">
+                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KDF-6p-9Dl">
+                    <rect key="frame" x="20" y="316" width="280" height="1"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" name="controlHighlightColor" catalog="System" colorSpace="catalog"/>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IQ9-pu-NaA">
+                    <rect key="frame" x="40" y="278" width="60" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="Sign Out">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>

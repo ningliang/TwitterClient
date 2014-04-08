@@ -8,6 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol MenuDelegate <NSObject>
+
+- (void)didClickHome;
+- (void)didClickProfile;
+- (void)didClickMentions;
+- (void)didClickSignOut;
+
+@end
+
 @interface MenuViewController : UIViewController
+
+@property (nonatomic, assign) id<MenuDelegate> delegate;
 
 @end

@@ -10,9 +10,13 @@
 #import "TweetsViewController.h"
 #import "MenuViewController.h"
 
-@interface MenuContainerViewController : UIViewController
+typedef enum {
+    TimelineTypeHome,
+    TimelineTypeMentions
+} TimelineType;
 
-@property (nonatomic, strong) UINavigationController *tweetsViewNavController;
-@property (nonatomic, strong) MenuViewController *menuViewController;
+@interface MenuContainerViewController : UIViewController <MenuDelegate, TweetListDelegate>
+
+@property (nonatomic, assign) TimelineType timelineType;
 
 @end

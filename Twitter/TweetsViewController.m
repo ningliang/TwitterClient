@@ -7,6 +7,7 @@
 //
 
 #import "TweetsViewController.h"
+#import "ProfileViewController.h"
 
 @interface TweetsViewController ()
 
@@ -15,6 +16,8 @@
 @property (nonatomic, strong) TweetCell *prototypeCell;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, assign) BOOL loadingMore;
+
+- (void)onNewTweetClick;
 
 @end
 
@@ -34,10 +37,6 @@
     [super viewDidLoad];
 
     // Nav bar
-    self.navigationItem.title = @"Home";
-
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Sign Out" style:UIBarButtonItemStylePlain target:self action:@selector(onSignoutClick)];
-    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"New" style:UIBarButtonItemStylePlain target:self action:@selector(onNewTweetClick)];
     
     // Table view setup
@@ -51,6 +50,7 @@
     // Pull to refresh
     self.refreshControl = [[UIRefreshControl alloc] init];
     NSAttributedString *refreshTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
+    
     self.refreshControl.attributedTitle = refreshTitle;
     [self.refreshControl addTarget:self action:@selector(reloadData) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:self.refreshControl];
@@ -68,27 +68,20 @@
 }
 
 - (void) reloadData {
-    
     // Begin pull to refresh
     NSAttributedString *refreshMessage = [[NSAttributedString alloc] initWithString:@"Fetching Tweets"];
     [self.refreshControl setAttributedTitle:refreshMessage];
-
-    [[TwitterClient sharedInstance] getHomeTimeline:^(NSMutableArray *tweets) {
+    
+    [self.delegate fetchTweets:^(NSArray *tweets) {
         // End pull to refresh
         [self.refreshControl endRefreshing];
         NSAttributedString *refreshTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
         [self.refreshControl setAttributedTitle:refreshTitle];
-
+        
         // Reload cells
-        self.tweets = tweets;
+        self.tweets = [tweets mutableCopy];
         [self.tableView reloadData];
-    } withMaxId:nil];
-}
-
-- (void)onSignoutClick {
-    [[TwitterClient sharedInstance] logout];
-    self.tweets = [[NSMutableArray alloc] init];
-    [self.tableView reloadData];
+    } withSinceId:nil];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -174,6 +167,14 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void) didClickProfileImage:(User *)user {
+    if (self.allowProfileVisit) {
+        ProfileViewController *profileViewController = [[ProfileViewController alloc] initWithUserId:user.userId];
+        profileViewController.navigationItem.title = [NSString stringWithFormat:@"@%@", user.userName];
+        [self.navigationController pushViewController:profileViewController animated:YES];
+    }
+}
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     CGPoint offset = scrollView.contentOffset;
     CGRect bounds = scrollView.bounds;
@@ -188,12 +189,13 @@
         if (!self.loadingMore) {
             self.loadingMore = YES;
             Tweet *lastTweet = [self.tweets lastObject];
-            [[TwitterClient sharedInstance] getHomeTimeline:^(NSMutableArray *tweets) {
+            
+            [self.delegate fetchTweets:^(NSArray *tweets) {
                 [self.tweets removeLastObject];
                 [self.tweets addObjectsFromArray:tweets];
                 [self.tableView reloadData];
                 self.loadingMore = NO;
-            } withMaxId:lastTweet.tweetId];
+            } withSinceId:lastTweet.tweetId];
         }
     }
 }

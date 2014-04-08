@@ -37,6 +37,11 @@
     
     UIImage *replyImage = [UIImage imageNamed:@"reply.png"];
     [self.replyButton setImage:replyImage forState:UIControlStateNormal];
+    
+    // Setup image click
+    self.userImageView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didClickImage)];
+    [self.userImageView addGestureRecognizer:tapRecognizer];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -59,7 +64,7 @@
     self.retweetCountLabel.text = [NSString stringWithFormat:@"%i", self.tweet.retweetCount];
     self.favoriteCountLabel.text = [NSString stringWithFormat:@"%i", self.tweet.favoriteCount];
     
-    [self.userImageView setImageWithURL:[NSURL URLWithString:self.tweet.user.profileImageUrl]];
+    [self.userImageView setImageWithURL:[NSURL URLWithString:self.tweet.user.profileImageLargeUrl]];
     
     UIImage *favoriteImage;
     if (self.tweet.favorited) {
@@ -88,6 +93,10 @@
 
 - (void)onFavorite {
     [self.delegate didFavorite:self];
+}
+
+- (void)didClickImage {
+    [self.delegate didClickProfileImage:self.tweet.user];
 }
 
 @end

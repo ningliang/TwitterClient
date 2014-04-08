@@ -22,6 +22,28 @@ static User *_currentUser;
     };    
 }
 
+- (NSString *)prettyTweetCount {
+    return [self prettyCount:self.tweetCount];
+}
+
+- (NSString *)prettyFollowingCount {
+    return [self prettyCount:self.followingCount];
+}
+
+- (NSString *)prettyFollowersCount {
+    return [self prettyCount:self.followersCount];
+}
+
+- (NSString *)prettyCount:(NSInteger)count {
+    if (count > 1000000) {
+        return [NSString stringWithFormat:@"%.1fM", (float)count / 1000000];
+    } else if (count > 1000) {
+        return [NSString stringWithFormat:@"%.1fK", (float)count / 1000];
+    } else {
+        return [NSString stringWithFormat:@"%i", count];
+    }
+}
+
 + (void)setCurrentUser:(User *)user {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setValue:[user dictionaryValue] forKey:@"current_user"];
@@ -51,6 +73,10 @@ static User *_currentUser;
     user.fullName = dictionary[@"name"];
     user.profileImageUrl = dictionary[@"profile_image_url"];
     user.profileImageLargeUrl = [user.profileImageUrl stringByReplacingOccurrencesOfString:@"_normal" withString:@"_bigger"];
+
+    user.tweetCount = [dictionary[@"statuses_count"] intValue];
+    user.followersCount = [dictionary[@"followers_count"] intValue];
+    user.followingCount = [dictionary[@"friends_count"] intValue];
     
     NSLog(@"%@", dictionary);
     

@@ -12,11 +12,18 @@
 #import "TweetDetailViewController.h"
 #import "ComposeTweetViewController.h"
 
+@protocol TweetListDelegate <NSObject>
+
+- (void) fetchTweets:(void (^)(NSArray *tweets))block withSinceId:(NSString *)sinceIdOrNil;
+
+@end
+
 @interface TweetsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, TweetDetailDelegate, ComposeTweetDelegate>
 
 @property (nonatomic, strong) NSMutableArray *tweets;
+@property (nonatomic, assign) NSInteger targetUserId;
+@property (nonatomic, assign) BOOL allowProfileVisit;
 
-- (void)onSignoutClick;
-- (void)onNewTweetClick;
+@property (nonatomic, assign) id<TweetListDelegate> delegate;
 
 @end

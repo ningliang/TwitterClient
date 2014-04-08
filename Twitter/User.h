@@ -16,7 +16,15 @@
 @property (nonatomic, strong) NSString *profileImageUrl;
 @property (nonatomic, strong) NSString *profileImageLargeUrl;
 
+@property (nonatomic, assign) NSInteger tweetCount;
+@property (nonatomic, assign) NSInteger followingCount;
+@property (nonatomic, assign) NSInteger followersCount;
+
 - (NSDictionary *)dictionaryValue;
+
+- (NSString *)prettyTweetCount;
+- (NSString *)prettyFollowingCount;
+- (NSString *)prettyFollowersCount;
 
 + (void)setCurrentUser:(User *)user;
 + (User *)currentUser;

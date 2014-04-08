@@ -14,6 +14,7 @@
 - (void)didRetweet:(id)sender;
 - (void)didFavorite:(id)sender;
 - (void)didReply:(id)sender;
+- (void)didClickProfileImage:(User *)user;
 
 @end
 
